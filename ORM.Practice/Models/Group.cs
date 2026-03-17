@@ -6,13 +6,10 @@ using System.Threading.Tasks;
 
 namespace ORM.Practice.Models
 {
-    internal class Student
+    internal class Group
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public string Surname { get; set; }
-        public int Age { get; set; }
-        public int GroupId { get; set; } 
-        public Group Group { get; set; } 
+        public List<Student> Students { get; set; }
     }
 }

@@ -21,6 +21,23 @@ namespace ORM.Practice.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("ORM.Practice.Models.Group", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Groups", (string)null);
+                });
+
             modelBuilder.Entity("ORM.Practice.Models.Student", b =>
                 {
                     b.Property<int>("Id")
@@ -30,6 +47,9 @@ namespace ORM.Practice.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
                     b.Property<int>("Age")
+                        .HasColumnType("int");
+
+                    b.Property<int>("GroupId")
                         .HasColumnType("int");
 
                     b.Property<string>("Name")
@@ -42,7 +62,25 @@ namespace ORM.Practice.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Students");
+                    b.HasIndex("GroupId");
+
+                    b.ToTable("Students", (string)null);
+                });
+
+            modelBuilder.Entity("ORM.Practice.Models.Student", b =>
+                {
+                    b.HasOne("ORM.Practice.Models.Group", "Group")
+                        .WithMany("Students")
+                        .HasForeignKey("GroupId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Group");
+                });
+
+            modelBuilder.Entity("ORM.Practice.Models.Group", b =>
+                {
+                    b.Navigation("Students");
                 });
 #pragma warning restore 612, 618
         }
