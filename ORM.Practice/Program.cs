@@ -31,6 +31,49 @@ namespace ORM.Practice
             //}
             #endregion
 
+            #region AddProfile
+            //db.Profiles.AddRange
+            //    (
+            //        new Profile { Address = "123 Main St", StudentId = 1 },
+            //        new Profile { Address = "456 Elm St", StudentId = 2 },
+            //        new Profile { Address = "789 Oak St", StudentId = 5 },
+            //        new Profile { Address = "321 Pine St", StudentId = 6 },
+            //        new Profile { Address = "654 Maple St", StudentId = 7 },
+            //        new Profile { Address = "987 Cedar St", StudentId = 8 },
+            //        new Profile { Address = "111 Birch St", StudentId = 9 },
+            //        new Profile { Address = "222 Spruce St", StudentId = 10 }
+            //    );
+            //db.SaveChanges();
+            #endregion
+
+            #region AddCourse
+            //db.Courses.AddRange
+            //    (
+            //        new Course { Name = "Mathematics", Size = 30 },
+            //        new Course { Name = "Physics", Size = 25 },
+            //        new Course { Name = "Chemistry", Size = 20 },
+            //        new Course { Name = "Biology", Size = 15 },
+            //        new Course { Name = "History", Size = 10 }
+            //    );
+            //db.SaveChanges();
+            //Console.WriteLine("Courses have been added to the database.");
+            #endregion
+
+            #region Add StudentCourse
+            //db.StudentCourses.AddRange
+            //(
+            //    new StudentCourse { StudentId = 2, CourseId = 1 },
+            //    new StudentCourse { StudentId = 5, CourseId = 4 },
+            //    new StudentCourse { StudentId = 6, CourseId = 5 },
+            //    new StudentCourse { StudentId = 7, CourseId = 1 },
+            //    new StudentCourse { StudentId = 8, CourseId = 2 },
+            //    new StudentCourse { StudentId = 9, CourseId = 3 },
+            //    new StudentCourse { StudentId = 10, CourseId = 4 }
+            //);
+            //db.SaveChanges();
+            //Console.WriteLine("StudentCourses have been added to the database.");
+            #endregion
+
             #region Add student to database
             //db.Students.AddRange
             //    (
@@ -50,7 +93,7 @@ namespace ORM.Practice
             #endregion
 
             #region Remove student
-            //var studentToDelete = db.Students.First(x => x.Id == 4);
+            //var studentToDelete = db.Students.First(x => x.Id == 1);
             //if (studentToDelete != null)
             //{
             //    db.Students.Remove(studentToDelete);
@@ -70,12 +113,46 @@ namespace ORM.Practice
             #endregion
 
             #region Get students from database  
-            var students = db.Students
-                .AsNoTracking()
+            //var students = db.Students
+            //    .AsNoTracking()
+            //    .ToList();
+            //foreach (var student in students)
+            //{
+            //    Console.WriteLine($"ID: {student.Id}, Name: {student.Name}, Surname: {student.Surname}, Age: {student.Age}, GroupId: {student.GroupId}");
+            //}
+            #endregion
+
+            #region Get Student with Course
+            //var studentsWithGroup = db.Students
+            //    .Include(s => s.StudentsCourses)
+            //    .ThenInclude(sc => sc.Course)
+            //    .AsNoTracking()
+            //    .ToList();
+
+            //foreach (var student in studentsWithGroup)
+            //{
+            //    Console.WriteLine($"ID: {student.Id}, Name: {student.Name}, Surname: {student.Surname}, Age: {student.Age}");
+            //    foreach (var studentCourse in student.StudentsCourses)
+            //    {
+            //        Console.WriteLine($"  Enrolled in: {studentCourse.Course.Name}");
+            //    }
+            //}
+            #endregion
+
+            #region get student by id with course  
+            int studentId = 2; // Example student ID
+            var studentWithCourses = db.StudentCourses
+                .Where(s => s.StudentId == studentId)
+                .Select(sc => new
+                {
+                    StudentName = sc.Student.Name,
+                    Courses = sc.Course.Name
+                })
+                .AsNoTracking() 
                 .ToList();
-            foreach (var student in students)
+            foreach (var item in studentWithCourses)
             {
-                Console.WriteLine($"ID: {student.Id}, Name: {student.Name}, Surname: {student.Surname}, Age: {student.Age}, GroupId: {student.GroupId}");
+                Console.WriteLine($"Student: {item.StudentName}, Course: {item.Courses}");
             }
             #endregion
         }

@@ -10,6 +10,7 @@ namespace ORM.Practice.Models
     {
         public int Id { get; set; }
         public string Name { get; set; }
+        // one to many relationship with Student    
         public List<Student> Students { get; set; }
     }
 }

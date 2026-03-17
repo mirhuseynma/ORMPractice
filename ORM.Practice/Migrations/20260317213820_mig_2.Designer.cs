@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using ORM.Practice.Data;
 
@@ -10,9 +11,11 @@ using ORM.Practice.Data;
 namespace ORM.Practice.Migrations
 {
     [DbContext(typeof(AppDBContext))]
-    partial class AppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20260317213820_mig_2")]
+    partial class mig_2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -20,26 +23,6 @@ namespace ORM.Practice.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
-
-            modelBuilder.Entity("ORM.Practice.Models.Course", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<int>("Size")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Courses");
-                });
 
             modelBuilder.Entity("ORM.Practice.Models.Group", b =>
                 {
@@ -110,21 +93,6 @@ namespace ORM.Practice.Migrations
                     b.ToTable("Students");
                 });
 
-            modelBuilder.Entity("ORM.Practice.Models.StudentCourse", b =>
-                {
-                    b.Property<int>("StudentId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CourseId")
-                        .HasColumnType("int");
-
-                    b.HasKey("StudentId", "CourseId");
-
-                    b.HasIndex("CourseId");
-
-                    b.ToTable("StudentCourses");
-                });
-
             modelBuilder.Entity("ORM.Practice.Models.Profile", b =>
                 {
                     b.HasOne("ORM.Practice.Models.Student", "Student")
@@ -147,30 +115,6 @@ namespace ORM.Practice.Migrations
                     b.Navigation("Group");
                 });
 
-            modelBuilder.Entity("ORM.Practice.Models.StudentCourse", b =>
-                {
-                    b.HasOne("ORM.Practice.Models.Course", "Course")
-                        .WithMany("StudentsCourses")
-                        .HasForeignKey("CourseId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("ORM.Practice.Models.Student", "Student")
-                        .WithMany("StudentsCourses")
-                        .HasForeignKey("StudentId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Course");
-
-                    b.Navigation("Student");
-                });
-
-            modelBuilder.Entity("ORM.Practice.Models.Course", b =>
-                {
-                    b.Navigation("StudentsCourses");
-                });
-
             modelBuilder.Entity("ORM.Practice.Models.Group", b =>
                 {
                     b.Navigation("Students");
@@ -180,8 +124,6 @@ namespace ORM.Practice.Migrations
                 {
                     b.Navigation("Profile")
                         .IsRequired();
-
-                    b.Navigation("StudentsCourses");
                 });
 #pragma warning restore 612, 618
         }
